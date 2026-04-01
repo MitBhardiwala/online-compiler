@@ -30,3 +30,6 @@ desktop.ini
 
 # Ignore batch files
 *.bat
+
+
+.env
