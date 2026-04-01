@@ -1,0 +1,8 @@
+1. Changes made to command for tailwind css: 
+    npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+    npx tailwindcss init -p
+    npm i
+
+    and then finally 
+
+    npm run dev 

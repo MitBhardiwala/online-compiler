@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Allow crawling of images
+Allow: /src/assets/logos/
+
+# Sitemap location
+Sitemap: https://onlinecodechalao.in/sitemap.xml 

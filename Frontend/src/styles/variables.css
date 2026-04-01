@@ -1,0 +1,25 @@
+:root {
+  /* Colors */
+  --primary-color: #00040f;
+  --secondary-color: #00f6ff;
+  --dimWhite: rgba(255, 255, 255, 0.7);
+  --black-gradient: linear-gradient(
+    144.39deg,
+    #ffffff -278.56%,
+    #6d6d6d -78.47%,
+    #11101d 91.61%
+  );
+
+  /* Typography */
+  --font-family: "Poppins", sans-serif;
+
+  /* Sizes */
+  --nav-height: 77px;
+  --editor-min-width: 30%;
+  --editor-max-width: 70%;
+
+  /* Z-indices */
+  --z-modal: 50;
+  --z-dropdown: 40;
+  --z-header: 30;
+}

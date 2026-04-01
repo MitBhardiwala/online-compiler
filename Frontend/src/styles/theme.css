@@ -1,0 +1,29 @@
+@import "./variables.css";
+
+/* Dark theme (default) */
+.theme-dark {
+  --bg-primary: var(--primary-color);
+  --bg-secondary: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: var(--dimWhite);
+  --border-color: #2a2b36;
+}
+
+/* Editor specific themes */
+.editor-theme {
+  --editor-bg: #0f1117;
+  --editor-border: var(--border-color);
+  --editor-font: "Source Code Pro", monospace;
+}
+
+/* Component specific themes */
+.navbar-theme {
+  --nav-bg: var(--bg-primary);
+  --nav-text: var(--text-primary);
+  --nav-height: var(--nav-height);
+}
+
+.modal-theme {
+  --modal-bg: var(--bg-secondary);
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+}
