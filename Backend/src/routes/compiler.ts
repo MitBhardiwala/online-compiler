@@ -1,7 +1,7 @@
 import express from 'express';
-const router = express.Router();
 import { executeCode } from '../controllers/compilerController.js';
+const router = express.Router();
 
 router.post('/execute', executeCode);
 
-export default router; 
+export default router;

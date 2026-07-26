@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
@@ -24,12 +24,7 @@ const CodeEditor = ({ code, setCode, language, onSelection,onKeyDown}) => {
     }
   };
 
-  const [selectionMenu, setSelectionMenu] = useState({
-    visible: false,
-    x: 0,
-    y: 0,
-    selectedText: "",
-  });
+
 
   return (
     <div className="h-full w-full overflow-hidden bg-[#0F1117]">

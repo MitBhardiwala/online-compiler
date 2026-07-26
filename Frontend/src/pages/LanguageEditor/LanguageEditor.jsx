@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
-import { Navbar, CTA, Footer } from "../../components";
+import { useParams, Link } from "react-router-dom";
+import { Navbar, Footer } from "../../components";
 import { CodeEditor, OutputWindow } from "../../components/editor";
 import styles from "../../styles/style";
 import { Button } from "../../components/common";
@@ -71,7 +71,6 @@ const LanguageEditor = () => {
     promptInputRef,
     handleTextSelection,
     handleEdit,
-    setShowPromptInput,
     setSelectionMenu,
     hideUIElements,
   } = useTextSelection();
@@ -79,6 +78,7 @@ const LanguageEditor = () => {
   useEffect(() => {
     setOutput("");
     setInput("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language, isAIMode]);
 
   const handleKeyDown = (e) => {
@@ -88,7 +88,7 @@ const LanguageEditor = () => {
         handleAISubmit();
       } else if (!isAIMode && !isLoading) {
         console.log("helllo");
-        handleRunCode(code, selectedLanguage);
+        handleRunCode(code, language);
       }
     }
   };

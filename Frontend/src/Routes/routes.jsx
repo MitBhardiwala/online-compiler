@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Navbar,Hero,CTA,Footer } from "../components/index.js";
+import { Hero, CTA } from "../components/index.js";
 import {
   Features,
   Team,
@@ -10,7 +10,6 @@ import {
   NotFound,
 } from "../components/sections/index.js";
 import Editor from "../pages/Editor/Editor.jsx";
-import LanguageEditor from "../pages/LanguageEditor/LanguageEditor.jsx"; 
 import { SharedCodeLoader, LanguageRouteHandler } from "./routeHandlers.jsx";
 import MainLayout from "../components/layout/mainLayout.jsx";
 

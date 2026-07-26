@@ -1,4 +1,10 @@
-const LANGUAGE_CONFIG = {
+﻿export interface LanguageEntry {
+  image: string;
+  filename: string;
+  runCmd: string;
+}
+
+const LANGUAGE_CONFIG: Record<string, LanguageEntry> = {
   python: {
     image: "python:3.11-slim",
     filename: "solution.py",

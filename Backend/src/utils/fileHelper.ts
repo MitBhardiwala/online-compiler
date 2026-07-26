@@ -1,4 +1,4 @@
-import fs from "fs";
+﻿import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 
@@ -9,7 +9,7 @@ const TEMP_DIR = path.resolve("temp");
  * Ensures the temp directory exists.
  * Called once on server startup.
  */
-export function ensureTempDir() {
+export function ensureTempDir(): void {
   if (!fs.existsSync(TEMP_DIR)) {
     fs.mkdirSync(TEMP_DIR, { recursive: true });
   }
@@ -19,11 +19,11 @@ export function ensureTempDir() {
  * Writes code to a uniquely named temp file.
  * Returns the full file path.
  *
- * @param {string} code
- * @param {string} filename  e.g. "solution.py"
- * @returns {string}  absolute path to the created file
+ * @param code
+ * @param filename  e.g. "solution.py"
+ * @returns absolute path to the created file
  */
-export function writeTempFile(code, filename) {
+export function writeTempFile(code: string, filename: string): string {
   const fileId = uuidv4();
   const filePath = path.join(TEMP_DIR, `${fileId}_${filename}`);
   fs.writeFileSync(filePath, code, "utf8");
@@ -33,12 +33,12 @@ export function writeTempFile(code, filename) {
 /**
  * Deletes a temp file silently.
  *
- * @param {string} filePath
+ * @param filePath
  */
-export function deleteTempFile(filePath) {
+export function deleteTempFile(filePath: string): void {
   try {
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
   } catch (err) {
-    console.error("[deleteTempFile] failed:", err.message);
+    console.error("[deleteTempFile] failed:", (err as Error).message);
   }
 }

@@ -41,7 +41,7 @@ export const SharedCodeLoader = () => {
             navigate("/editor");
           }, 3000);
         }
-      } catch (error) {
+      } catch {
         setError("Failed to load shared code");
         setTimeout(() => {
           navigate("/editor");

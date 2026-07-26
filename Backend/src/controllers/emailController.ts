@@ -1,9 +1,10 @@
+﻿import { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
 
 // Create transporter using SMTP credentials
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
+    port: process.env.SMTP_PORT as unknown as number,
     secure: true,
     auth: {
         user: process.env.SMTP_USER,
@@ -11,15 +12,16 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-async function sendSuggestionEmail(req, res) {
+async function sendSuggestionEmail(req: Request, res: Response): Promise<void> {
     try {
         const { name, email, category, suggestion } = req.body;
 
         if (!name || !email || !category || !suggestion) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'All fields are required'
             });
+            return;
         }
 
         // Email content
@@ -53,4 +55,4 @@ async function sendSuggestionEmail(req, res) {
 
 export {
     sendSuggestionEmail
-}; 
+};

@@ -1,4 +1,4 @@
-import { setCode, setLanguage, setOutput, setIsRunning, setError } from './reducers';
+import { setOutput, setIsRunning, setError } from './reducers';
 import { executeCode } from '../services/api';
 
 export const runCode = (code, language, input) => async (dispatch) => {

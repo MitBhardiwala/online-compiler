@@ -148,3 +148,5 @@ desktop.ini
 
 # Ignore batch files
 *.bat
+# TypeScript build output
+dist/

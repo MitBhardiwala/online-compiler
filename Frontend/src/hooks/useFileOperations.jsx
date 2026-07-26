@@ -3,9 +3,7 @@ import { getDownloadFileName, convertCode } from "../services/api/editor.api";
 import { streamCodeToEditor } from "../pages/Editor/editorUtils";
 import { languageOptions } from "../constants/languageOptions";
 import { showAlert } from "../utils/alert";
-import LanguageSelectionModal, {
-  setShowLanguageModal,
-} from "../components/common/langaugeSelectorModal";
+import { setShowLanguageModal } from "../components/common/langaugeSelectorModal";
 
 export const useFileOperations = (
   setCode,

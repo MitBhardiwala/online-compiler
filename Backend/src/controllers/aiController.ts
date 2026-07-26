@@ -1,7 +1,8 @@
+﻿import { Request, Response } from 'express';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import config from '../config/config.js';
 
-const genAI = new GoogleGenerativeAI(config.gemini.apiKey);
+const genAI = new GoogleGenerativeAI(config.gemini.apiKey as string);
 const model = genAI.getGenerativeModel({ model: config.gemini.model });
 
 const SUPPORTED_LANGUAGES = [
@@ -68,22 +69,24 @@ Edit Suggestion:
 
 Language: {language}`;
 
-async function generateCode(req, res) {
+async function generateCode(req: Request, res: Response): Promise<void> {
     try {
         const { prompt, language } = req.body;
 
         if (!prompt || !language) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Prompt and language are required'
             });
+            return;
         }
 
         if (!SUPPORTED_LANGUAGES.includes(language)) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Unsupported programming language'
             });
+            return;
         }
 
         const fullPrompt = `${MASTER_PROMPT}\nTask: ${prompt}\nLanguage: ${language}`;
@@ -121,22 +124,24 @@ async function generateCode(req, res) {
     }
 }
 
-async function generateFileName(req, res) {
+async function generateFileName(req: Request, res: Response): Promise<void> {
     try {
         const { code, language } = req.body;
 
         if (!code || !language) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Code and language are required'
             });
+            return;
         }
 
         if (!SUPPORTED_LANGUAGES.includes(language)) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Unsupported programming language'
             });
+            return;
         }
 
         const fullPrompt = `${MASTER_PROMPT_FILENAME}\n${code}`;
@@ -168,22 +173,24 @@ async function generateFileName(req, res) {
     }
 }
 
-async function convertCode(req, res) {
+async function convertCode(req: Request, res: Response): Promise<void> {
     try {
         const { code, sourceLanguage, targetLanguage } = req.body;
 
         if (!code || !sourceLanguage || !targetLanguage) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Code, source language and target language are required'
             });
+            return;
         }
 
         if (!SUPPORTED_LANGUAGES.includes(sourceLanguage) || !SUPPORTED_LANGUAGES.includes(targetLanguage)) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Unsupported programming language'
             });
+            return;
         }
 
         const fullPrompt = `${CONVERSION_PROMPT}${code}\n\nSource Language: ${sourceLanguage}\nTarget Language: ${targetLanguage}`;
@@ -197,10 +204,11 @@ async function convertCode(req, res) {
         response = response.trim(); // Remove any extra whitespace
 
         if (response === 'CONVERSION_NOT_SUPPORTED') {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Conversion between these languages is not supported'
             });
+            return;
         }
 
         const promptTokens = result.response.usageMetadata?.promptTokenCount || 0;
@@ -229,22 +237,24 @@ async function convertCode(req, res) {
     }
 }
 
-async function editCode(req, res) {
+async function editCode(req: Request, res: Response): Promise<void> {
     try {
         const { fullCode, selectedCode, editSuggestion, language } = req.body;
 
         if (!fullCode || !selectedCode || !editSuggestion || !language) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Full code, selected code, edit suggestion and language are required'
             });
+            return;
         }
 
         if (!SUPPORTED_LANGUAGES.includes(language)) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Unsupported programming language'
             });
+            return;
         }
 
         const fullPrompt = EDIT_PROMPT
@@ -262,10 +272,11 @@ async function editCode(req, res) {
         editedPortion = editedPortion.trim();
 
         if (editedPortion === 'EDIT_NOT_SUPPORTED') {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 error: 'Unable to perform the requested edit'
             });
+            return;
         }
 
         // Replace the selected portion in the full code
@@ -301,4 +312,4 @@ export {
     generateFileName,
     convertCode,
     editCode
-}; 
+};

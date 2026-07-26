@@ -1,16 +1,15 @@
 import styles from "../../styles/style";
-import { styles as localStyles } from "./EditorStyles";
 import { useState, useRef, useEffect } from "react";
 import LanguageSelector from "../../components/editor/LanguageSelector";
 import CodeEditor from "../../components/editor/CodeEditor";
 import OutputWindow from "../../components/editor/OutputWindow";
 import { Helmet } from "react-helmet-async";
 import { getFileExtension } from "../../services/utils/helpers";
-import { QRCodeSVG } from "qrcode.react";
 import { logo } from "../../assets";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import LoadingOverlay from "../../utils/LoadingOverlay";
 import TopBar from "../../components/editor/TopBar";
+import { showAlert } from "../../utils/alert";
 
 import { useAIFeatures } from "../../hooks/useAIFeatures";
 import { useCodeExecution } from "../../hooks/useCodeExecution";
@@ -42,7 +41,6 @@ const Editor = () => {
     handleTextSelection,
     handleEdit,
     hideUIElements,
-    setSelectionMenu,
   } = useTextSelection();
 
   // First, initialize useCodeExecution to get isLoading and setIsLoading
@@ -90,7 +88,7 @@ const Editor = () => {
     setSelectedLanguage
   );
 
-  const getDefaultCode = (language) => {
+  const getDefaultCode = () => {
     if (isAIMode) {
       return "";
     }
@@ -116,6 +114,7 @@ const Editor = () => {
 
     setOutput("");
     setInput("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLanguage, isAIMode, searchParams, location, navigate]);
 
   // Updated second useEffect for code initialization
@@ -144,6 +143,7 @@ const Editor = () => {
     if (languageParam && !location.state?.initialLanguage) {
       setSelectedLanguage(languageParam);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location, searchParams, navigate]);
 
   const handleLanguageChange = (newLanguage) => {

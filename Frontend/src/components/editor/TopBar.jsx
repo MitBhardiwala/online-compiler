@@ -1,5 +1,4 @@
-import React, { useState, useRef } from "react";
-import { languageOptions } from "../../constants/languageOptions";
+import { useState, useRef } from "react";
 import LoadingOverlay from "../../utils/LoadingOverlay";
 import { useNavigate } from "react-router-dom";
 import { setShowLanguageModal } from "../common/langaugeSelectorModal";
@@ -23,7 +22,7 @@ const TopBar = ({
   fileName,
   isAIMode,
   setIsAIMode,
-  bgmodePrompt,
+
   handleShare,
   handleDownload,
   handleSubmit,

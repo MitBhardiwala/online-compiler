@@ -1,4 +1,4 @@
-import { showAlert } from '../../utils/alert';
+
 
 export const streamCodeToEditor = async (
   codeString,
@@ -21,7 +21,6 @@ export const streamCodeToEditor = async (
 
     for (let i = 0; i < newLines.length; i++) {
       const newLine = newLines[i];
-      const oldLine = originalLines[i] || '';
 
       // Preserve subsequent original lines until they're processed
       const preservedLines = originalLines.slice(i + 1).join('\n');

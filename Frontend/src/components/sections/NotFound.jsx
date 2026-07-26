@@ -30,7 +30,7 @@ const NotFound = () => {
           Page Not Found
         </h2>
         <p className={`${styles.paragraph} text-center max-w-[37.5rem] mb-8`}>
-          Oops! The page you're looking for doesn't exist. You might have
+          Oops! The page you&apos;re looking for doesn&apos;t exist. You might have
           mistyped the address or the page may have moved.
         </p>
         <Button text="Go Home" onClick={handleGoHome} />

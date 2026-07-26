@@ -83,7 +83,7 @@ export const getDownloadFileName = async (code, language) => {
       throw new Error("Failed to get filename");
     }
     return result.fileName;
-  } catch (error) {
+  } catch {
     // Fallback filename with timestamp and extension
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const extension = getFileExtension(language);

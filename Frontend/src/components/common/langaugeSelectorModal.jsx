@@ -1,4 +1,5 @@
-import React, { useState, createContext, useContext } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { useState } from "react";
 import { languageOptions } from "../../constants/languageOptions";
 
 // Create a context for the language modal state
@@ -99,6 +100,7 @@ const LanguageSelectionModal = ({
 
 // Export the component and state variables
 export default LanguageSelectionModal;
+
 export {
   showLanguageModalState as showLanguageModal,
   setShowLanguageModalState as setShowLanguageModal,

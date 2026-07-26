@@ -1,8 +1,8 @@
-import express from 'express';
-const router = express.Router();
+import express, { Request, Response } from 'express';
 import { createShare, getSharedCode } from '../utils/shareManager.js';
+const router = express.Router();
 
-router.post('/generate-sharing-link', async (req, res) => {
+router.post('/generate-sharing-link', async (req: Request, res: Response) => {
     try {
         const { code, language } = req.body;
         
@@ -37,7 +37,7 @@ router.post('/generate-sharing-link', async (req, res) => {
     }
 });
 
-router.get('/:shareId', async (req, res) => {
+router.get('/:shareId', async (req: Request<{ shareId: string }>, res: Response) => {
     const { shareId } = req.params;
     const shareData = await getSharedCode(shareId);
     
@@ -55,4 +55,4 @@ router.get('/:shareId', async (req, res) => {
     });
 });
 
-export default router; 
+export default router;

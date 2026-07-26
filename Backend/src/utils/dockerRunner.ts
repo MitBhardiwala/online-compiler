@@ -1,7 +1,17 @@
-import { exec } from "child_process";
+﻿import { exec } from "child_process";
 import CONFIG from "../config/index.js";
+import type { LanguageEntry } from "../config/languages.js";
 
 const { DOCKER, TIMEOUT_MS } = CONFIG;
+
+interface DockerResult {
+  success?: boolean;
+  output?: string;
+  error?: string;
+  stdout?: string;
+  stderr?: string;
+  executionTime: string;
+}
 
 /**
  * Builds the docker run command string.
@@ -18,11 +28,11 @@ const { DOCKER, TIMEOUT_MS } = CONFIG;
  *  --ulimit nproc        max processes — prevents fork bombs
  *  --ulimit fsize        max file write size — prevents huge file creation
  *
- * @param {string} codeFilePath  absolute path to temp code file on host
- * @param {object} langConfig    entry from LANGUAGE_CONFIG
+ * @param codeFilePath  absolute path to temp code file on host
+ * @param langConfig    entry from LANGUAGE_CONFIG
  * @returns {string}
  */
-function buildDockerCommand(codeFilePath, langConfig) {
+function buildDockerCommand(codeFilePath: string, langConfig: LanguageEntry): string {
   const { image, filename, runCmd } = langConfig;
 
   const isCompiler = ["gcc:latest", "golang:alpine"].includes(image);
@@ -37,7 +47,7 @@ function buildDockerCommand(codeFilePath, langConfig) {
     isCompiler ? "" : "--tmpfs /tmp:rw,nosuid,size=64m",  // not needed without read-only
     `--ulimit nproc=${DOCKER.ULIMIT_NPROC}`,
     `--ulimit fsize=${DOCKER.ULIMIT_FSIZE}`,
-    isCompiler ? "" : `-u ${DOCKER.USER}`,  // compiler runs as root, that's fine
+    isCompiler ? "" : `-u ${DOCKER.USER}`,  // compiler runs as root, that is fine
     `-v "${codeFilePath}:/code/${filename}:ro"`,
     "-i",
     image,
@@ -48,12 +58,12 @@ function buildDockerCommand(codeFilePath, langConfig) {
 /**
  * Runs user code inside a Docker container.
  *
- * @param {string} codeFilePath  path to the temp code file
- * @param {object} langConfig    entry from LANGUAGE_CONFIG
- * @param {string} input         stdin to pipe into the program
- * @returns {Promise<{ stdout: string, stderr: string, executionTime: string }>}
+ * @param codeFilePath  path to the temp code file
+ * @param langConfig    entry from LANGUAGE_CONFIG
+ * @param input         stdin to pipe into the program
+ * @returns {Promise<DockerResult>}
  */
-export function runInDocker(codeFilePath, langConfig, input = "") {
+export function runInDocker(codeFilePath: string, langConfig: LanguageEntry, input: string = ""): Promise<DockerResult> {
   return new Promise((resolve) => {
     const dockerCmd = buildDockerCommand(codeFilePath, langConfig);
 
@@ -86,7 +96,7 @@ export function runInDocker(codeFilePath, langConfig, input = "") {
     );
 
     // Pipe user-provided stdin into the running container
-    if (input) child.stdin.write(input);
-    child.stdin.end();
+    if (input) child.stdin?.write(input);
+    child.stdin?.end();
   });
 }

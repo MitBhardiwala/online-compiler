@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
 app.use(requestLogger);
 
 // Basic security headers
-app.use((req, res, next) => {
+app.use((_req, res, next) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-XSS-Protection', '1; mode=block');
@@ -46,7 +46,7 @@ app.use('/api/ai', aiRouter);
 app.use('/api/email', emailRouter);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
     res.json({ status: 'OK' });
 });
 
@@ -64,7 +64,7 @@ setInterval(async () => {
             }
         }
     } catch (error) {
-        logger.error('Temp cleanup error', { error: error.message, stack: error.stack });
+        logger.error('Temp cleanup error', { error: (error as Error).message, stack: (error as Error).stack });
     }
 }, 3600000); // Run every hour
 
@@ -74,4 +74,4 @@ app.listen(config.port, () => {
         port: config.port,
         nodeEnv: config.nodeEnv
     });
-}); 
+});

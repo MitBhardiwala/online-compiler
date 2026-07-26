@@ -1,7 +1,26 @@
-import dotenv from 'dotenv';
+﻿import dotenv from 'dotenv';
 dotenv.config();
 
-const config = {
+interface LanguageConfig {
+    extension: string;
+    command: string;
+    compileCommand?: string;
+    executeCommand?: string;
+}
+
+interface GeminiConfig {
+    apiKey: string | undefined;
+    model: string;
+}
+
+interface Config {
+    port: string | number;
+    nodeEnv: string;
+    supportedLanguages: Record<string, LanguageConfig>;
+    gemini: GeminiConfig;
+}
+
+const config: Config = {
     port: process.env.PORT || 3000,
     nodeEnv: process.env.NODE_ENV || 'development',
     supportedLanguages: {
@@ -70,4 +89,4 @@ const config = {
     }
 };
 
-export default config; 
+export default config;

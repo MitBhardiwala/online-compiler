@@ -1,5 +1,5 @@
 import styles from "../../styles/style";
-import { Navbar, Footer } from "../index.js"; 
+import { Navbar, Footer } from "../index.js";
 
 /**
  * MainLayout component - common layout wrapper for pages with navbar and footer
