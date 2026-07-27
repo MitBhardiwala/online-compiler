@@ -192,7 +192,7 @@ const Editor = () => {
   return (
     <>
       <Helmet>
-        <title>Editor - Online Compiler</title>
+        <title>Code Editor - Online Compiler</title>
       </Helmet>
       <div className="w-full max-h-fit bg-[#00040f]">
         <nav className="w-full h-[10vh] bg-[#00040f] border-b border-[#2A2B36] px-4 py-2 flex justify-between items-center">
