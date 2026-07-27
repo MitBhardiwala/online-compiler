@@ -1,4 +1,4 @@
-﻿import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger.js';
 
 function requestLogger(req: Request, res: Response, next: NextFunction): void {
@@ -23,7 +23,7 @@ function requestLogger(req: Request, res: Response, next: NextFunction): void {
         if (typeof responseBody === 'string') {
             try {
                 parsedResponse = JSON.parse(responseBody);
-            } catch (e) {
+            } catch {
                 // Keep as string if not JSON
             }
         }

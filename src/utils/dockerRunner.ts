@@ -1,4 +1,4 @@
-﻿import { exec } from "child_process";
+﻿import {  execFile } from "child_process";
 import CONFIG from "../config/index.js";
 import type { LanguageEntry } from "../config/languages.js";
 
@@ -32,27 +32,25 @@ interface DockerResult {
  * @param langConfig    entry from LANGUAGE_CONFIG
  * @returns {string}
  */
-function buildDockerCommand(codeFilePath: string, langConfig: LanguageEntry): string {
+function buildDockerArgs(codeFilePath: string, langConfig: LanguageEntry): string[] {
   const { image, filename, runCmd } = langConfig;
 
-  const isCompiler = ["gcc:latest", "golang:alpine"].includes(image);
-
   return [
-    "docker run",
+    "run",
     "--rm",
-    "--network none",
-    `--memory ${DOCKER.MEMORY}`,
-    `--cpus ${DOCKER.CPUS}`,
-    isCompiler ? "" : "--read-only",        // compilers need writable fs
-    isCompiler ? "" : "--tmpfs /tmp:rw,nosuid,size=64m",  // not needed without read-only
-    `--ulimit nproc=${DOCKER.ULIMIT_NPROC}`,
-    `--ulimit fsize=${DOCKER.ULIMIT_FSIZE}`,
-    isCompiler ? "" : `-u ${DOCKER.USER}`,  // compiler runs as root, that is fine
-    `-v "${codeFilePath}:/code/${filename}:ro"`,
+    "--network", "none",
+    "--memory", DOCKER.MEMORY,
+    "--cpus", DOCKER.CPUS,
+    "--read-only",
+    "--tmpfs", "/tmp:rw,exec,nosuid,size=64m,uid=1000,gid=1000",
+    "--ulimit", `nproc=${DOCKER.ULIMIT_NPROC}`,
+    "--ulimit", `fsize=${DOCKER.ULIMIT_FSIZE}`,
+    "-u", DOCKER.USER,
+    "-v", `${codeFilePath}:/code/${filename}:ro`,
     "-i",
     image,
-    `sh -c "${runCmd}"`,
-  ].filter(Boolean).join(" ");
+    "sh", "-c", runCmd,
+  ];
 }
 
 /**
@@ -65,19 +63,19 @@ function buildDockerCommand(codeFilePath: string, langConfig: LanguageEntry): st
  */
 export function runInDocker(codeFilePath: string, langConfig: LanguageEntry, input: string = ""): Promise<DockerResult> {
   return new Promise((resolve) => {
-    const dockerCmd = buildDockerCommand(codeFilePath, langConfig);
+    const args = buildDockerArgs(codeFilePath, langConfig);
 
-    console.log("[docker] cmd:", dockerCmd);
+    console.log("[docker] cmd: docker", args.join(" "));
 
     const startTime = Date.now();
 
-    const child = exec(
-      dockerCmd,
+    const child = execFile(
+      "docker",
+      args,
       { timeout: TIMEOUT_MS },
       (err, stdout, stderr) => {
         const executionTime = ((Date.now() - startTime) / 1000).toFixed(2);
 
-        // err.killed = true means exec() hit the timeout
         if (err && err.killed) {
           return resolve({
             stdout: "",
@@ -88,14 +86,13 @@ export function runInDocker(codeFilePath: string, langConfig: LanguageEntry, inp
 
         resolve({
           success: !err,
-          output: stdout || stderr || "",  // old code combined them like this
+          output: stdout || stderr || "",
           error: stderr || "",
-          executionTime,  // bonus, keep it
+          executionTime,
         });
       }
     );
 
-    // Pipe user-provided stdin into the running container
     if (input) child.stdin?.write(input);
     child.stdin?.end();
   });

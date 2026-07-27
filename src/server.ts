@@ -10,6 +10,7 @@ import aiRouter from './routes/ai.js';
 import emailRouter from './routes/email.js';
 import logger from './utils/logger.js';
 import requestLogger from './middleware/requestLogger.js';
+import errorHandler from './middleware/errorHandler.js';
 import { ensureTempDir } from "./utils/fileHelper.js";
 import config from './config/config.js';
 
@@ -47,8 +48,11 @@ app.use('/api/email', emailRouter);
 
 // Health check endpoint
 app.get('/health', (_req, res) => {
-    res.json({ status: 'OK' });
+    res.json({ status: 'Server is running properly' });
 });
+
+// Global Error Handler
+app.use(errorHandler);
 
 // Cleanup temp files periodically
 const TEMP_DIR = path.join(__dirname, '../temp');

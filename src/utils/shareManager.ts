@@ -74,7 +74,7 @@ async function getSharedCode(shareId: string): Promise<ShareData | null> {
     try {
         const data = await fs.readFile(filePath, 'utf-8');
         return JSON.parse(data) as ShareData;
-    } catch (error) {
+    } catch {
         return null;
     }
 }
